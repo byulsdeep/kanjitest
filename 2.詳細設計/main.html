@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+    <div id="root">
+        <div class="App">
+            <div class="main">
+                <div class="top">
+                    <h1>漢字テスト</h1>
+                </div>
+                <div class="bottom">
+                    <div class="left">
+                        <div class="left_left">
+                            <div class="employee_name_label">氏名</div>
+                            <div class="employee_number_label">社員番号</div>
+                            <div class="employee_hire_date_label">入社年月</div>
+                        </div>
+                        <div class="left_right">
+                            <input class="employee_name" pattern="[\p{L}\p{M}]{1,10}" required />
+                            <input class="employee_number" pattern="\d{6}" required />
+                            <input class="employee_hire_date" type="month" required />
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button>開始</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

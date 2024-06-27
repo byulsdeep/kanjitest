@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="inputField" onclick="focusItem(this)">きのう</div>
+    <div class="currentInputField"></div>
+</body>
+<style>
+    .inputField, .currentInputField {
+        width: 300px;
+        height: 100px;
+        border: 1px solid black;
+        font-size: 3rem;
+        text-align: center;
+        line-height: 100px;
+    }
+</style>
+<script>
+    const inputDictionary = {
+        // Basic vowels
+        'a': 'あ', 'i': 'い', 'u': 'う', 'e': 'え', 'o': 'お',
+
+        // K consonant
+        'ka': 'か', 'ki': 'き', 'ku': 'く', 'ke': 'け', 'ko': 'こ',
+        'kya': 'きゃ', 'kyu': 'きゅ', 'kyo': 'きょ',
+
+        // S consonant
+        'sa': 'さ', 'shi': 'し', 'si': 'し', 'su': 'す', 'se': 'せ', 'so': 'そ',
+        'sha': 'しゃ', 'shu': 'しゅ', 'sho': 'しょ',
+        'sya': 'しゃ', 'syu': 'しゅ', 'syo': 'しょ',
+
+        // T consonant
+        'ta': 'た', 'chi': 'ち', 'ti': 'ち', 'tsu': 'つ', 'tu': 'つ', 'te': 'て', 'to': 'と',
+        'cha': 'ちゃ', 'chu': 'ちゅ', 'cho': 'ちょ',
+        'tya': 'ちゃ', 'tyu': 'ちゅ', 'tyo': 'ちょ',
+        'cya': 'ちゃ', 'cyu': 'ちゅ', 'cyo': 'ちょ',
+        'tsa': 'つぁ', 'tsi': 'つぃ', 'tse': 'つぇ', 'tso': 'つぉ',
+
+        // N consonant
+        'na': 'な', 'ni': 'に', 'nu': 'ぬ', 'ne': 'ね', 'no': 'の',
+        'nya': 'にゃ', 'nyu': 'にゅ', 'nyo': 'にょ',
+
+        // H consonant
+        'ha': 'は', 'hi': 'ひ', 'fu': 'ふ', 'hu': 'ふ', 'he': 'へ', 'ho': 'ほ',
+        'hya': 'ひゃ', 'hyu': 'ひゅ', 'hyo': 'ひょ',
+
+        // M consonant
+        'ma': 'ま', 'mi': 'み', 'mu': 'む', 'me': 'め', 'mo': 'も',
+        'mya': 'みゃ', 'myu': 'みゅ', 'myo': 'みょ',
+
+        // Y consonant
+        'ya': 'や', 'yu': 'ゆ', 'yo': 'よ',
+
+        // R consonant
+        'ra': 'ら', 'ri': 'り', 'ru': 'る', 're': 'れ', 'ro': 'ろ',
+        'rya': 'りゃ', 'ryu': 'りゅ', 'ryo': 'りょ',
+
+        // W consonant
+        'wa': 'わ', 'wo': 'を',
+
+        // N consonant (special)
+        'nn': 'ん',
+
+        // G consonant
+        'ga': 'が', 'gi': 'ぎ', 'gu': 'ぐ', 'ge': 'げ', 'go': 'ご',
+        'gya': 'ぎゃ', 'gyu': 'ぎゅ', 'gyo': 'ぎょ',
+
+        // Z consonant
+        'za': 'ざ', 'ji': 'じ', 'zi': 'じ', 'zu': 'ず', 'ze': 'ぜ', 'zo': 'ぞ',
+        'ja': 'じゃ', 'ju': 'じゅ', 'jo': 'じょ',
+        'jya': 'じゃ', 'jyu': 'じゅ', 'jyo': 'じょ',
+
+        // D consonant
+        'da': 'だ', 'di': 'ぢ', 'du': 'づ', 'de': 'で', 'do': 'ど',
+        'dya': 'ぢゃ', 'dyu': 'ぢゅ', 'dyo': 'ぢょ',
+
+        // B consonant
+        'ba': 'ば', 'bi': 'び', 'bu': 'ぶ', 'be': 'べ', 'bo': 'ぼ',
+        'bya': 'びゃ', 'byu': 'びゅ', 'byo': 'びょ',
+
+        // P consonant
+        'pa': 'ぱ', 'pi': 'ぴ', 'pu': 'ぷ', 'pe': 'ぺ', 'po': 'ぽ',
+        'pya': 'ぴゃ', 'pyu': 'ぴゅ', 'pyo': 'ぴょ',
+
+        // Additional sounds
+        'fa': 'ふぁ', 'fi': 'ふぃ', 'fe': 'ふぇ', 'fo': 'ふぉ', 'fyu': 'ふゅ',
+        'va': 'ゔぁ', 'vi': 'ゔぃ', 'vu': 'ゔ', 've': 'ゔぇ', 'vo': 'ゔぉ',
+        'wi': 'うぃ', 'we': 'うぇ', 'wo': 'うぉ',
+        'kwa': 'くぁ', 'kwi': 'くぃ', 'kwu': 'くぅ', 'kwe': 'くぇ', 'kwo': 'くぉ',
+        'gwa': 'ぐぁ', 'gwi': 'ぐぃ', 'gwu': 'ぐぅ', 'gwe': 'ぐぇ', 'gwo': 'ぐぉ',
+
+        // Small vowels for foreign sounds
+        'la': 'ぁ', 'li': 'ぃ', 'lu': 'ぅ', 'le': 'ぇ', 'lo': 'ぉ',
+        'qa': 'くぁ', 'qi': 'くぃ', 'qu': 'くぅ', 'qe': 'くぇ', 'qo': 'くぉ',
+
+        // Additional combinations
+        'she': 'しぇ', 'je': 'じぇ', 'che': 'ちぇ', 'tsyu': 'つゅ',
+        'zwi': 'ずぃ', 'dze': 'ぢぇ', 'dzi': 'ぢぃ', 'dyi': 'ぢぃ',
+        'syi': 'しぃ', 'jyi': 'じぃ', 'tyi': 'ちぃ',
+
+        // More
+        'lya': 'ゃ', 'lyu': 'ゅ', 'lye': 'ぇ', 'lyo': 'ょ',
+        '-': 'ー',
+        'ltu': 'っ',
+
+        // Doubled consonants
+        'kka': 'っか', 'kki': 'っき', 'kku': 'っく', 'kke': 'っけ', 'kko': 'っこ',
+        'ssa': 'っさ', 'sshi': 'っし', 'ssi': 'っし', 'ssu': 'っす', 'sse': 'っせ', 'sso': 'っそ',
+        'tta': 'った', 'tchi': 'っち', 'tti': 'っち', 'ttsu': 'っつ', 'ttu': 'っつ', 'tte': 'って', 'tto': 'っと',
+        'ppa': 'っぱ', 'ppi': 'っぴ', 'ppu': 'っぷ', 'ppe': 'っぺ', 'ppo': 'っぽ',
+        'ffa': 'っふぁ', 'ffi': 'っふぃ', 'ffu': 'っふ', 'ffe': 'っふぇ', 'ffo': 'っふぉ',
+        'gga': 'っが', 'ggi': 'っぎ', 'ggu': 'っぐ', 'gge': 'っげ', 'ggo': 'っご',
+        'bba': 'っば', 'bbi': 'っび', 'bbu': 'っぶ', 'bbe': 'っべ', 'bbo': 'っぼ',
+        'dda': 'っだ', 'ddi': 'っぢ', 'ddu': 'っづ', 'dde': 'っで', 'ddo': 'っど',
+        'zza': 'っざ', 'jji': 'っじ', 'zzi': 'っじ', 'zzu': 'っず', 'zze': 'っぜ', 'zzo': 'っぞ',
+
+        // Doubled consonants with y
+        'kkya': 'っきゃ', 'kkyu': 'っきゅ', 'kkyo': 'っきょ',
+        'ssya': 'っしゃ', 'ssyu': 'っしゅ', 'ssyo': 'っしょ',
+        'ttya': 'っちゃ', 'ttyu': 'っちゅ', 'ttyo': 'っちょ',
+        'ppya': 'っぴゃ', 'ppyu': 'っぴゅ', 'ppyo': 'っぴょ',
+        'hhya': 'っひゃ', 'hhyu': 'っひゅ', 'hhyo': 'っひょ',
+        'mmya': 'っみゃ', 'mmyu': 'っみゅ', 'mmyo': 'っみょ',
+        'rrya': 'っりゃ', 'rryu': 'っりゅ', 'rryo': 'っりょ',
+        'ggya': 'っぎゃ', 'ggyu': 'っぎゅ', 'ggyo': 'っぎょ',
+        'bbya': 'っびゃ', 'bbyu': 'っびゅ', 'bbyo': 'っびょ',
+        'ddya': 'っぢゃ', 'ddyu': 'っぢゅ', 'ddyo': 'っぢょ',
+        'jjya': 'っじゃ', 'jjyu': 'っじゅ', 'jjyo': 'っじょ',
+
+        // More doubled consonants
+        'hha': 'っは', 'hhi': 'っひ', 'hhu': 'っふ', 'hhe': 'っへ', 'hho': 'っほ',
+        'mma': 'っま', 'mmi': 'っみ', 'mmu': 'っむ', 'mme': 'っめ', 'mmo': 'っも',
+        'yya': 'っや', 'yyu': 'っゆ', 'yyo': 'っよ',
+        'rra': 'っら', 'rri': 'っり', 'rru': 'っる', 'rre': 'っれ', 'rro': 'っろ',
+        
+        // More combinations with small vowels and consonants
+        'lka': 'ヵ', 'lke': 'ヶ', 'xa': 'ぁ', 'xi': 'ぃ', 'xu': 'ぅ', 'xe': 'ぇ', 'xo': 'ぉ',
+        'xka': 'ヵ', 'xke': 'ヶ', 'xtsu': 'っ', 'xtu': 'っ',
+        'xya': 'ゃ', 'xyu': 'ゅ', 'xyo': 'ょ',
+
+        // Extended sounds for completeness
+        'wu': 'う',
+    }
+    let focusedItem
+    const currentInputField = document.querySelector('.currentInputField')
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Backspace') {
+            if (currentInputField.textContent.length > 0) {
+                currentInputField.textContent = currentInputField.textContent.slice(0, -1)
+            } else {
+                focusedItem.textContent = focusedItem.textContent.slice(0, -1)
+            }
+        } 
+        if (/^[a-z\-]+$/.test(event.key)) {
+            currentInputField.textContent += event.key
+        }
+        if (currentInputField.textContent in inputDictionary) {
+            focusedItem.textContent += inputDictionary[currentInputField.textContent]
+            currentInputField.textContent = ''
+        }
+        if (currentInputField.textContent.length > 4) {
+            currentInputField.textContent = ''
+        }
+    })
+
+    function focusItem(inputField) {
+        currentInputField.textContent = ''
+        inputField.style.backgroundColor = "palegreen"
+        focusedItem = inputField
+    }
+    focusItem(document.querySelector('.inputField'))
+</script>
+</html>
