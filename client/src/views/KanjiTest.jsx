@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import './KanjiTest.css'
-import Timer from './Timer'
-import Modal from './Modal'
+import Timer from '../components/Timer'
+import Modal from '../components/Modal'
+import Spinner from '../components/Spinner'
 
 const KanjiTest = () => {
 
-    //url params
+    // url params
     const [searchParams] = useSearchParams()
-    const employeeName = searchParams.get('employeeName')
-    const employeeNumber = searchParams.get('employeeNumber')
-    const employeeHireDate = searchParams.get('employeeHireDate')
+    const employeeName = searchParams.get(`employeeName`)
+    const employeeNumber = searchParams.get(`employeeNumber`)
+    const employeeHireDate = searchParams.get(`employeeHireDate`)
     
-    //initial render
+    // initial render
     const kanjiDictionary = {
         "機能": "きのう",
         "失敗": "しっぱい",
@@ -144,21 +145,21 @@ const KanjiTest = () => {
     // focus module
     // const [focusedIndex, setFocusedIndex] = useState(0)
     const focusItem = (index) => {
-        const hiraganaItems = document.querySelectorAll('.hiragana_item')
-        const float = document.querySelector('.float')
+        const hiraganaItems = document.querySelectorAll(`.hiragana_item`)
+        const float = document.querySelector(`.float`)
         // setFocusedIndex(index)
-        // document.querySelectorAll('.hiragana_item')[index].scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // document.querySelectorAll(`.hiragana_item`)[index].scrollIntoView({ behavior: `smooth`, block: `center` })
         hiraganaItems.forEach((item) => {
-            if (item.style.backgroundColor === 'aqua') {
-                item.style.backgroundColor = 'unset'
-                item.id = 'unset'
+            if (item.style.backgroundColor === `aqua`) {
+                item.style.backgroundColor = `unset`
+                item.id = `unset`
             }
         })
         hiraganaItems[index].style.backgroundColor = "aqua"
-        hiraganaItems[index].id = 'focused'
+        hiraganaItems[index].id = `focused`
         const rect = hiraganaItems[index].getBoundingClientRect()
         float.textContent = ``
-        float.style.visibility = 'visible'
+        float.style.visibility = `visible`
         float.style.top = `${rect.top}px`
         float.style.left = `${rect.left + 90}px`
     }
@@ -166,157 +167,160 @@ const KanjiTest = () => {
     // input module
     const inputDictionary = {
         // Basic vowels
-        'a': 'あ', 'i': 'い', 'u': 'う', 'e': 'え', 'o': 'お',
+        "a": "あ", "i": "い", "u": "う", "e": "え", "o": "お",
 
         // K consonant
-        'ka': 'か', 'ki': 'き', 'ku': 'く', 'ke': 'け', 'ko': 'こ',
-        'kya': 'きゃ', 'kyu': 'きゅ', 'kyo': 'きょ',
+        "ka": "か", "ki": "き", "ku": "く", "ke": "け", "ko": "こ",
+        "kya": "きゃ", "kyu": "きゅ", "kyo": "きょ",
 
         // S consonant
-        'sa': 'さ', 'shi': 'し', 'si': 'し', 'su': 'す', 'se': 'せ', 'so': 'そ',
-        'sha': 'しゃ', 'shu': 'しゅ', 'sho': 'しょ',
-        'sya': 'しゃ', 'syu': 'しゅ', 'syo': 'しょ',
+        "sa": "さ", "shi": "し", "si": "し", "su": "す", "se": "せ", "so": "そ",
+        "sha": "しゃ", "shu": "しゅ", "sho": "しょ",
+        "sya": "しゃ", "syu": "しゅ", "syo": "しょ",
 
         // T consonant
-        'ta': 'た', 'chi': 'ち', 'ti': 'ち', 'tsu': 'つ', 'tu': 'つ', 'te': 'て', 'to': 'と',
-        'cha': 'ちゃ', 'chu': 'ちゅ', 'cho': 'ちょ',
-        'tya': 'ちゃ', 'tyu': 'ちゅ', 'tyo': 'ちょ',
-        'cya': 'ちゃ', 'cyu': 'ちゅ', 'cyo': 'ちょ',
-        'tsa': 'つぁ', 'tsi': 'つぃ', 'tse': 'つぇ', 'tso': 'つぉ',
+        "ta": "た", "chi": "ち", "ti": "ち", "tsu": "つ", "tu": "つ", "te": "て", "to": "と",
+        "cha": "ちゃ", "chu": "ちゅ", "cho": "ちょ",
+        "tya": "ちゃ", "tyu": "ちゅ", "tyo": "ちょ",
+        "cya": "ちゃ", "cyu": "ちゅ", "cyo": "ちょ",
+        "tsa": "つぁ", "tsi": "つぃ", "tse": "つぇ", "tso": "つぉ",
 
         // N consonant
-        'na': 'な', 'ni': 'に', 'nu': 'ぬ', 'ne': 'ね', 'no': 'の',
-        'nya': 'にゃ', 'nyu': 'にゅ', 'nyo': 'にょ',
+        "na": "な", "ni": "に", "nu": "ぬ", "ne": "ね", "no": "の",
+        "nya": "にゃ", "nyu": "にゅ", "nyo": "にょ",
 
         // H consonant
-        'ha': 'は', 'hi': 'ひ', 'fu': 'ふ', 'hu': 'ふ', 'he': 'へ', 'ho': 'ほ',
-        'hya': 'ひゃ', 'hyu': 'ひゅ', 'hyo': 'ひょ',
+        "ha": "は", "hi": "ひ", "fu": "ふ", "hu": "ふ", "he": "へ", "ho": "ほ",
+        "hya": "ひゃ", "hyu": "ひゅ", "hyo": "ひょ",
 
         // M consonant
-        'ma': 'ま', 'mi': 'み', 'mu': 'む', 'me': 'め', 'mo': 'も',
-        'mya': 'みゃ', 'myu': 'みゅ', 'myo': 'みょ',
+        "ma": "ま", "mi": "み", "mu": "む", "me": "め", "mo": "も",
+        "mya": "みゃ", "myu": "みゅ", "myo": "みょ",
 
         // Y consonant
-        'ya': 'や', 'yu': 'ゆ', 'yo': 'よ',
+        "ya": "や", "yu": "ゆ", "yo": "よ",
 
         // R consonant
-        'ra': 'ら', 'ri': 'り', 'ru': 'る', 're': 'れ', 'ro': 'ろ',
-        'rya': 'りゃ', 'ryu': 'りゅ', 'ryo': 'りょ',
+        "ra": "ら", "ri": "り", "ru": "る", "re": "れ", "ro": "ろ",
+        "rya": "りゃ", "ryu": "りゅ", "ryo": "りょ",
 
         // W consonant
-        'wa': 'わ', 'wo': 'を',
+        "wa": "わ", "wo": "を",
 
         // N consonant (special)
-        'nn': 'ん',
+        "nn": "ん",
 
         // G consonant
-        'ga': 'が', 'gi': 'ぎ', 'gu': 'ぐ', 'ge': 'げ', 'go': 'ご',
-        'gya': 'ぎゃ', 'gyu': 'ぎゅ', 'gyo': 'ぎょ',
+        "ga": "が", "gi": "ぎ", "gu": "ぐ", "ge": "げ", "go": "ご",
+        "gya": "ぎゃ", "gyu": "ぎゅ", "gyo": "ぎょ",
 
         // Z consonant
-        'za': 'ざ', 'ji': 'じ', 'zi': 'じ', 'zu': 'ず', 'ze': 'ぜ', 'zo': 'ぞ',
-        'ja': 'じゃ', 'ju': 'じゅ', 'jo': 'じょ',
-        'jya': 'じゃ', 'jyu': 'じゅ', 'jyo': 'じょ',
+        "za": "ざ", "ji": "じ", "zi": "じ", "zu": "ず", "ze": "ぜ", "zo": "ぞ",
+        "ja": "じゃ", "ju": "じゅ", "jo": "じょ",
+        "jya": "じゃ", "jyu": "じゅ", "jyo": "じょ",
 
         // D consonant
-        'da': 'だ', 'di': 'ぢ', 'du': 'づ', 'de': 'で', 'do': 'ど',
-        'dya': 'ぢゃ', 'dyu': 'ぢゅ', 'dyo': 'ぢょ',
+        "da": "だ", "di": "ぢ", "du": "づ", "de": "で", "do": "ど",
+        "dya": "ぢゃ", "dyu": "ぢゅ", "dyo": "ぢょ",
 
         // B consonant
-        'ba': 'ば', 'bi': 'び', 'bu': 'ぶ', 'be': 'べ', 'bo': 'ぼ',
-        'bya': 'びゃ', 'byu': 'びゅ', 'byo': 'びょ',
+        "ba": "ば", "bi": "び", "bu": "ぶ", "be": "べ", "bo": "ぼ",
+        "bya": "びゃ", "byu": "びゅ", "byo": "びょ",
 
         // P consonant
-        'pa': 'ぱ', 'pi': 'ぴ', 'pu': 'ぷ', 'pe': 'ぺ', 'po': 'ぽ',
-        'pya': 'ぴゃ', 'pyu': 'ぴゅ', 'pyo': 'ぴょ',
+        "pa": "ぱ", "pi": "ぴ", "pu": "ぷ", "pe": "ぺ", "po": "ぽ",
+        "pya": "ぴゃ", "pyu": "ぴゅ", "pyo": "ぴょ",
 
         // Additional sounds
-        'fa': 'ふぁ', 'fi': 'ふぃ', 'fe': 'ふぇ', 'fo': 'ふぉ', 'fyu': 'ふゅ',
-        'va': 'ゔぁ', 'vi': 'ゔぃ', 'vu': 'ゔ', 've': 'ゔぇ', 'vo': 'ゔぉ',
-        'wi': 'うぃ', 'we': 'うぇ', 'wo': 'うぉ',
-        'kwa': 'くぁ', 'kwi': 'くぃ', 'kwu': 'くぅ', 'kwe': 'くぇ', 'kwo': 'くぉ',
-        'gwa': 'ぐぁ', 'gwi': 'ぐぃ', 'gwu': 'ぐぅ', 'gwe': 'ぐぇ', 'gwo': 'ぐぉ',
+        "fa": "ふぁ", "fi": "ふぃ", "fe": "ふぇ", "fo": "ふぉ", "fyu": "ふゅ",
+        "va": "ゔぁ", "vi": "ゔぃ", "vu": "ゔ", "ve": "ゔぇ", "vo": "ゔぉ",
+        "wi": "うぃ", "we": "うぇ", "wo": "うぉ",
+        "kwa": "くぁ", "kwi": "くぃ", "kwu": "くぅ", "kwe": "くぇ", "kwo": "くぉ",
+        "gwa": "ぐぁ", "gwi": "ぐぃ", "gwu": "ぐぅ", "gwe": "ぐぇ", "gwo": "ぐぉ",
 
         // Small vowels for foreign sounds
-        'la': 'ぁ', 'li': 'ぃ', 'lu': 'ぅ', 'le': 'ぇ', 'lo': 'ぉ',
-        'qa': 'くぁ', 'qi': 'くぃ', 'qu': 'くぅ', 'qe': 'くぇ', 'qo': 'くぉ',
+        "la": "ぁ", "li": "ぃ", "lu": "ぅ", "le": "ぇ", "lo": "ぉ",
+        "qa": "くぁ", "qi": "くぃ", "qu": "くぅ", "qe": "くぇ", "qo": "くぉ",
 
         // Additional combinations
-        'she': 'しぇ', 'je': 'じぇ', 'che': 'ちぇ', 'tsyu': 'つゅ',
-        'zwi': 'ずぃ', 'dze': 'ぢぇ', 'dzi': 'ぢぃ', 'dyi': 'ぢぃ',
-        'syi': 'しぃ', 'jyi': 'じぃ', 'tyi': 'ちぃ',
+        "she": "しぇ", "je": "じぇ", "che": "ちぇ", "tsyu": "つゅ",
+        "zwi": "ずぃ", "dze": "ぢぇ", "dzi": "ぢぃ", "dyi": "ぢぃ",
+        "syi": "しぃ", "jyi": "じぃ", "tyi": "ちぃ",
 
         // More
-        'lya': 'ゃ', 'lyu': 'ゅ', 'lye': 'ぇ', 'lyo': 'ょ',
-        '-': 'ー',
-        'ltu': 'っ',
+        "lya": "ゃ", "lyu": "ゅ", "lye": "ぇ", "lyo": "ょ",
+        "-": "ー",
+        "ltu": "っ",
 
         // Doubled consonants
-        'kka': 'っか', 'kki': 'っき', 'kku': 'っく', 'kke': 'っけ', 'kko': 'っこ',
-        'ssa': 'っさ', 'sshi': 'っし', 'ssi': 'っし', 'ssu': 'っす', 'sse': 'っせ', 'sso': 'っそ',
-        'tta': 'った', 'tchi': 'っち', 'tti': 'っち', 'ttsu': 'っつ', 'ttu': 'っつ', 'tte': 'って', 'tto': 'っと',
-        'ppa': 'っぱ', 'ppi': 'っぴ', 'ppu': 'っぷ', 'ppe': 'っぺ', 'ppo': 'っぽ',
-        'ffa': 'っふぁ', 'ffi': 'っふぃ', 'ffu': 'っふ', 'ffe': 'っふぇ', 'ffo': 'っふぉ',
-        'gga': 'っが', 'ggi': 'っぎ', 'ggu': 'っぐ', 'gge': 'っげ', 'ggo': 'っご',
-        'bba': 'っば', 'bbi': 'っび', 'bbu': 'っぶ', 'bbe': 'っべ', 'bbo': 'っぼ',
-        'dda': 'っだ', 'ddi': 'っぢ', 'ddu': 'っづ', 'dde': 'っで', 'ddo': 'っど',
-        'zza': 'っざ', 'jji': 'っじ', 'zzi': 'っじ', 'zzu': 'っず', 'zze': 'っぜ', 'zzo': 'っぞ',
+        "kka": "っか", "kki": "っき", "kku": "っく", "kke": "っけ", "kko": "っこ",
+        "ssa": "っさ", "sshi": "っし", "ssi": "っし", "ssu": "っす", "sse": "っせ", "sso": "っそ",
+        "tta": "った", "tchi": "っち", "tti": "っち", "ttsu": "っつ", "ttu": "っつ", "tte": "って", "tto": "っと",
+        "ppa": "っぱ", "ppi": "っぴ", "ppu": "っぷ", "ppe": "っぺ", "ppo": "っぽ",
+        "ffa": "っふぁ", "ffi": "っふぃ", "ffu": "っふ", "ffe": "っふぇ", "ffo": "っふぉ",
+        "gga": "っが", "ggi": "っぎ", "ggu": "っぐ", "gge": "っげ", "ggo": "っご",
+        "bba": "っば", "bbi": "っび", "bbu": "っぶ", "bbe": "っべ", "bbo": "っぼ",
+        "dda": "っだ", "ddi": "っぢ", "ddu": "っづ", "dde": "っで", "ddo": "っど",
+        "zza": "っざ", "jji": "っじ", "zzi": "っじ", "zzu": "っず", "zze": "っぜ", "zzo": "っぞ",
 
         // Doubled consonants with y
-        'kkya': 'っきゃ', 'kkyu': 'っきゅ', 'kkyo': 'っきょ',
-        'ssya': 'っしゃ', 'ssyu': 'っしゅ', 'ssyo': 'っしょ',
-        'ttya': 'っちゃ', 'ttyu': 'っちゅ', 'ttyo': 'っちょ',
-        'ppya': 'っぴゃ', 'ppyu': 'っぴゅ', 'ppyo': 'っぴょ',
-        'hhya': 'っひゃ', 'hhyu': 'っひゅ', 'hhyo': 'っひょ',
-        'mmya': 'っみゃ', 'mmyu': 'っみゅ', 'mmyo': 'っみょ',
-        'rrya': 'っりゃ', 'rryu': 'っりゅ', 'rryo': 'っりょ',
-        'ggya': 'っぎゃ', 'ggyu': 'っぎゅ', 'ggyo': 'っぎょ',
-        'bbya': 'っびゃ', 'bbyu': 'っびゅ', 'bbyo': 'っびょ',
-        'ddya': 'っぢゃ', 'ddyu': 'っぢゅ', 'ddyo': 'っぢょ',
-        'jjya': 'っじゃ', 'jjyu': 'っじゅ', 'jjyo': 'っじょ',
+        "kkya": "っきゃ", "kkyu": "っきゅ", "kkyo": "っきょ",
+        "ssya": "っしゃ", "ssyu": "っしゅ", "ssyo": "っしょ",
+        "ttya": "っちゃ", "ttyu": "っちゅ", "ttyo": "っちょ",
+        "ppya": "っぴゃ", "ppyu": "っぴゅ", "ppyo": "っぴょ",
+        "hhya": "っひゃ", "hhyu": "っひゅ", "hhyo": "っひょ",
+        "mmya": "っみゃ", "mmyu": "っみゅ", "mmyo": "っみょ",
+        "rrya": "っりゃ", "rryu": "っりゅ", "rryo": "っりょ",
+        "ggya": "っぎゃ", "ggyu": "っぎゅ", "ggyo": "っぎょ",
+        "bbya": "っびゃ", "bbyu": "っびゅ", "bbyo": "っびょ",
+        "ddya": "っぢゃ", "ddyu": "っぢゅ", "ddyo": "っぢょ",
+        "jjya": "っじゃ", "jjyu": "っじゅ", "jjyo": "っじょ",
 
         // More doubled consonants
-        'hha': 'っは', 'hhi': 'っひ', 'hhu': 'っふ', 'hhe': 'っへ', 'hho': 'っほ',
-        'mma': 'っま', 'mmi': 'っみ', 'mmu': 'っむ', 'mme': 'っめ', 'mmo': 'っも',
-        'yya': 'っや', 'yyu': 'っゆ', 'yyo': 'っよ',
-        'rra': 'っら', 'rri': 'っり', 'rru': 'っる', 'rre': 'っれ', 'rro': 'っろ',
+        "hha": "っは", "hhi": "っひ", "hhu": "っふ", "hhe": "っへ", "hho": "っほ",
+        "mma": "っま", "mmi": "っみ", "mmu": "っむ", "mme": "っめ", "mmo": "っも",
+        "yya": "っや", "yyu": "っゆ", "yyo": "っよ",
+        "rra": "っら", "rri": "っり", "rru": "っる", "rre": "っれ", "rro": "っろ",
         
         // More combinations with small vowels and consonants
-        'lka': 'ヵ', 'lke': 'ヶ', 'xa': 'ぁ', 'xi': 'ぃ', 'xu': 'ぅ', 'xe': 'ぇ', 'xo': 'ぉ',
-        'xka': 'ヵ', 'xke': 'ヶ', 'xtsu': 'っ', 'xtu': 'っ',
-        'xya': 'ゃ', 'xyu': 'ゅ', 'xyo': 'ょ',
+        "lka": "ヵ", "lke": "ヶ", "xa": "ぁ", "xi": "ぃ", "xu": "ぅ", "xe": "ぇ", "xo": "ぉ",
+        "xka": "ヵ", "xke": "ヶ", "xtsu": "っ", "xtu": "っ",
+        "xya": "ゃ", "xyu": "ゅ", "xyo": "ょ",
 
         // Extended sounds for completeness
-        'wu': 'う',
+        "wu": "う",
     }
     const handleKeyDown = (event) => {
-        const float = document.querySelector('.float')
-        const hiraganaItems = document.querySelectorAll('.hiragana_item')
-        const focusedItem = document.querySelector('#focused')
-        if (event.key === 'Backspace') {
+        const float = document.querySelector(`.float`)
+        const hiraganaItems = document.querySelectorAll(`.hiragana_item`)
+        const focusedItem = document.querySelector(`#focused`)
+        if (focusedItem === null) {
+            return
+        }
+        if (event.key === `Backspace`) {
             if (float.textContent.length > 0) {
                 float.textContent = float.textContent.slice(0, -1)
             } else {
                 focusedItem.textContent = focusedItem.textContent.slice(0, -1)
             }
         } 
-        if (event.key === 'Tab' || event.key === 'ArrowDown') {
+        if (event.key === `Tab` || event.key === `ArrowDown`) {
             event.preventDefault()
             if (Array.from(hiraganaItems).indexOf(focusedItem) < 99) {
                 focusItem(Array.from(hiraganaItems).indexOf(focusedItem) + 1)
             }
         }
-        if (event.key === 'ArrowUp') {
+        if (event.key === `ArrowUp`) {
             if (Array.from(hiraganaItems).indexOf(focusedItem) > 0) {
                 focusItem(Array.from(hiraganaItems).indexOf(focusedItem) - 1)
             }
         }
-        if (event.key === 'ArrowLeft') {
+        if (event.key === `ArrowLeft`) {
             if (Array.from(hiraganaItems).indexOf(focusedItem) > 24) {
                 focusItem(Array.from(hiraganaItems).indexOf(focusedItem) - 25)
             }
         }
-        if (event.key === 'ArrowRight') {
+        if (event.key === `ArrowRight`) {
             if (Array.from(hiraganaItems).indexOf(focusedItem) < 75) {
                 focusItem(Array.from(hiraganaItems).indexOf(focusedItem) + 25)
             }
@@ -326,40 +330,39 @@ const KanjiTest = () => {
         }
         if (float.textContent in inputDictionary) {
             focusedItem.textContent += inputDictionary[float.textContent]
-            float.textContent = ''
+            float.textContent = ``
         }
         if (float.textContent.length > 4) {
-            float.textContent = ''
+            float.textContent = ``
+        }
+        if (focusedItem.textContent.length > 10) {
+            focusedItem.textContent = focusedItem.textContent.slice(0, -1)
         }
     }
     useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown)
-        return () => document.removeEventListener('keydown', handleKeyDown)
+        document.addEventListener(`keydown`, handleKeyDown)
+        return () => document.removeEventListener(`keydown`, handleKeyDown)
     }, [])
 
     // scoring module
     const [scoreValue, setScoreValue] = useState(0) 
     const score = () => {
         let score = 0
-        const hiraganaItems = document.querySelectorAll('.hiragana_item')
+        const hiraganaItems = document.querySelectorAll(`.hiragana_item`)
         Object.entries(kanjiDictionary).forEach((entry, index) => {
             if (entry[1] === hiraganaItems[index].textContent) {
                 score++
             } else {
-                hiraganaItems[index].style.backgroundColor = 'lightcoral'
+                hiraganaItems[index].style.backgroundColor = `lightcoral`
             }
         })
         setScoreValue(score)
         setMessage(`採点結果、あなたの点数は${score}点です。提出してよろしいですか？`)
         setIsVisible(true)
-        // if (confirm()) {
-        //     document.querySelector('.score_value').textContent = `${score}/${Object.entries(kanjiDictionary).length}`
-        //     sendResult(score) 
-        // }
     }
 
     // modal module
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState(``)
     const [isVisible, setIsVisible] = useState(false)
     const closeModal = () => setIsVisible(false)
 
@@ -371,6 +374,9 @@ const KanjiTest = () => {
         window.location.href = `/`
     }
 
+    //spinner module
+    const [isSpinnerVisible, setSpinnerVisible] = useState(false)
+
     return (
         <>
             <div class="kanji_test">
@@ -380,7 +386,6 @@ const KanjiTest = () => {
                         <div class="time">
                             <div class="time_label">経過時間</div>
                             <Timer setTimerId={setTimerId} />
-                            {/* {timerRef.current} */}
                         </div>
                         <div class="score">
                             <div class="score_label">点数</div>
@@ -399,12 +404,18 @@ const KanjiTest = () => {
                 </div>
             </div>        
             <div class="float"></div>
-            <Modal message={message} scoreValue={scoreValue} isVisible={isVisible} onClose={closeModal} 
+            <Modal 
+                message={message} 
+                scoreValue={scoreValue} 
+                isVisible={isVisible} 
+                onClose={closeModal} 
                 employeeName={employeeName}
                 employeeNumber={employeeNumber}
                 employeeHireDate={employeeHireDate}
                 timerId={timerId}
+                setSpinnerVisible={setSpinnerVisible}
             />
+            <Spinner isSpinnerVisible={isSpinnerVisible} />
         </>
     )
 }

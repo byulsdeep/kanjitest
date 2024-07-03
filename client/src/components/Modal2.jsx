@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import axios from "axios"
+import React from 'react'
 import './Modal2.css'
 
 const Modal2 = ({ message2, isVisible2, onClose2, onClose }) => {

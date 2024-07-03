@@ -69,3 +69,8 @@ input {
     white-space: nowrap;
     font-size: 2rem;
 }
+.main_message {
+    display: flex;
+    justify-content: center;
+    padding: 5%;
+}
