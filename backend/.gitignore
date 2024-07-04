@@ -4,3 +4,5 @@
 # Log files
 logs/
 *.log
+
+*.xlsx
