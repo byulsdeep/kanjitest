@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-.main {
+.admin {
     height: 90vh;
     width: 90vw;
     border: 1px solid black;
@@ -18,11 +18,11 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
-.main div {
+.admin div {
     /* border: 1px solid black; */
     font-size: 2rem;
 }
-.main_top {
+.admin_top {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,30 +32,32 @@ h1 {
     /* border: 1px solid black; */
     font-size: 2.5rem;
 }
-.main_bottom {
+.admin_bottom {
     display: flex;
     justify-content: center;
     /* padding: 5%; */
     flex-wrap: wrap;
+    height: 20vh;
+    /* border: 1px solid black; */
 }
-.main_left {
+.admin_left {
     display: flex;
     /* width: 50%; */
     /* padding: 5%; */
 }
-.main_left_left, .main_left_right {
+.admin_left_left, .admin_left_right {
     /* padding: 2.5%; */
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 50%;
 }
-.main_left_left > * {
+.admin_left_left > * {
     margin: 5%;
     text-align: center;
     /* display: flex; */
 }
-.main_right {
+.admin_right {
     /* width: 50%; */
     padding: 5%;
     display: flex;
@@ -66,22 +68,57 @@ input {
     font-size: 2rem;
     /* border: 1px solid black; */
 }
-.main_button {
+.admin_login_button {
     padding: 10%;
     width: 15rem;
     white-space: nowrap;
     font-size: 2rem;
 }
-.main_message {
+.admin_message {
     display: flex;
     justify-content: center;
     padding: 5%;
 }
-.admin_button_wrap {
+.admin_return_button_wrap {
     display: flex;
-    justify-content: end
+    justify-content: end;
+    /* background-color: pink; */
 }
-.admin_button {
-    font-size: 1.5rem;
+.admin_return_button {
     padding: 1%;
+    font-size: 1.5rem;
+}
+.admin_file_list_container {
+    border: 1px solid black;
+    /* width: 100%; */
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+}
+.admin_file_list_title {
+    font-size: 1.5rem;
+}
+.admin_file_list {
+    height: 100%;
+    overflow-y: scroll;
+}
+.admin_file {
+    width: 30rem;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    padding: 1%;
+}
+.admin_file_label {
+    margin: 1%;
+    font-weight: bold;
+}
+.admin_file_button {
+    font-size: 1rem;
+    padding: 0.5%;
 }

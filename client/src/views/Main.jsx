@@ -10,10 +10,6 @@ const Main = () => {
 
     const start = () => {
 
-        console.log(employeeName)
-        console.log(employeeNumber)
-        console.log(employeeHireDate)
-        
         if (!/^[^0-9]{1,10}$/.test(employeeName)) {
             setMessage(`氏名は10桁までの文字で入力ください。`)
             return
@@ -31,6 +27,10 @@ const Main = () => {
         `employeeName=${encodeURIComponent(employeeName)}&` +
         `employeeNumber=${encodeURIComponent(employeeNumber)}&` +
         `employeeHireDate=${encodeURIComponent(employeeHireDate.replace(/-/g, ''))}`
+    }
+
+    const loginAdmin = () => {
+        window.location.href = `/login`
     }
 
     return (
@@ -69,6 +69,9 @@ const Main = () => {
                 </div>
             </div>
             <div className="main_message">{message}</div>
+            <div className="admin_button_wrap">
+                <button className="admin_button" onClick={loginAdmin}>管理者モード</button>
+            </div>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import XLSX from 'xlsx'
 import fs from 'fs'
+import path from 'path'
 import { Mutex } from 'async-mutex'
 import winston from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
@@ -12,6 +13,7 @@ app.use(express.json())
 app.use(cors())
 const mutex = new Mutex()
 const PORT = 8080
+const router = express.Router()
 app.listen(PORT, () => {
     logger.info(`**************************************************************`)
     logger.info(`Server started on port ${PORT} in ${process.env.NODE_ENV} mode`)
@@ -21,7 +23,8 @@ app.listen(PORT, () => {
 // logger
 const transport = new DailyRotateFile({
     // filename: `C://workspace/kanjitest/backend/logs/kanjitest-%DATE%.log`,
-    filename: `/home/ec2-user/kanjitest/backend/logs/kanjitest-%DATE%.log`,
+    // filename: `/home/ec2-user/kanjitest/backend/logs/kanjitest-%DATE%.log`,
+    filename: `./logs/kanjitest-%DATE%.log`,
     datePattern: `YYYY-MM-DD`,
     zippedArchive: true,
     maxSize: `20m`,
@@ -49,7 +52,66 @@ app.use((err, req, res, next) => {
     next(err)
 })
 
-// api
+// download api
+app.get('/download/:fileName', (req, res) => {
+    const fileName = req.params.fileName
+    const filePath = `./exports/${fileName}`
+
+    // Check if the file exists
+    if (fs.existsSync(filePath)) {
+        // Set headers
+        res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`)
+        res.setHeader('Content-Type', 'application/octet-stream')
+
+        // Read and send the file
+        const fileStream = fs.createReadStream(filePath)
+        fileStream.pipe(res)
+    } else {
+        res.status(404).json({ error: 'File not found' })
+    }
+})
+
+// login api
+app.post(`/login`, async (req, res) => {
+    
+    fs.readFile(`./data/admin_info.json`, 'utf8', (err, data) => {
+        let success = false
+        if (err) {
+            logger.error('Error reading the JSON file:', err)
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
+        try {
+            const userInfo = JSON.parse(data)
+
+            Object.entries(userInfo).forEach(([name, birth]) => {
+                if (req.body.name === name && req.body.birth === birth) {
+                    success = true
+                    logger.info('login success')
+                }
+            })
+
+        } catch (err) {
+            logger.error('Error parsing JSON data:', err)
+            res.status(500).json({ message: 'Internal Server Error' })
+        }
+        if (success) {
+            fs.readdir(`./exports/`, (err, files) => {
+                if (err) {
+                    logger.error('Unable to scan directory: ' + err)
+                    res.status(500).json({ message: 'Internal Server Error' })
+                }
+                logger.info('List of files:')
+                files.forEach((file) => logger.info(file))
+                res.status(201).json({ message: `login success`, files: files })
+            })
+        } else {
+            logger.info('login failed')
+            res.status(401).json({ message: '間違った情報です' })
+        }
+      })
+})
+
+// kanjitest excel writing api
 app.post(`/kanjitest`, async (req, res) => {
     
     const release = await mutex.acquire()
@@ -57,13 +119,19 @@ app.post(`/kanjitest`, async (req, res) => {
 
     try {
         const today = new Date()
+        const year = today.getFullYear()
+        let month = today.getMonth() + 1
+        month = month > 9 ? month : `0${month}`
+        let day = today.getDate()
+        day = day > 9 ? day : `0${day}`
         const data = [{
-            テスト日: `${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}`,
+            テスト日: `${year}${month}${day}`,
             点数: `${req.body.scoreValue}/100`,
             経過時間: `${req.body.timeElapsed}`,
         }]
-        // const filePath = `C:/workspace/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
-        const filePath = `/home/ec2-user/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
+        //const filePath = `C:/workspace/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
+        // const filePath = `/home/ec2-user/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
+        const filePath = `./exports/${req.body.employeeHireDate}.xlsx`
         const sheetName = `${req.body.employeeName}${req.body.employeeNumber}`
         logger.info(`attempting excel file creation/modification`)
         logger.info(`filePath: ${filePath}`)
