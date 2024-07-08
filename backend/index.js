@@ -137,6 +137,16 @@ app.post(`/kanjitest`, async (req, res) => {
         logger.info(`filePath: ${filePath}`)
         logger.info(`sheetName: ${sheetName}`)
 
+        const directory = `./exports`
+
+        if (!fs.existsSync(directory)) {
+            // If it doesn't exist, create it
+            fs.mkdirSync(directory)
+            logger.info(`directory ${directory} not found. Created successfully`)
+        } else {
+            console.log(`directory ${directory} already exists. Proceeding to next step`)
+        }
+
         fs.access(filePath, fs.constants.F_OK, (err) => {
             if (err) {
                 // workbook does not exist
