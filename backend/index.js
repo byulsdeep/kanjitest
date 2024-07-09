@@ -96,7 +96,9 @@ app.post(`/login`, async (req, res) => {
             res.status(500).json({ message: 'Internal Server Error' })
         }
         if (success) {
-            fs.readdir(`./exports/`, (err, files) => {
+            // const path = `./exports/`
+            const path = `/home/ec2-user/kanjitest/backend/exports/` 
+            fs.readdir(path, (err, files) => {
                 if (err) {
                     logger.error('Unable to scan directory: ' + err)
                     res.status(500).json({ message: 'Internal Server Error' })
@@ -137,7 +139,8 @@ app.post(`/kanjitest`, async (req, res) => {
         logger.info(`filePath: ${filePath}`)
         logger.info(`sheetName: ${sheetName}`)
 
-        const directory = `./exports`
+        // const directory = `./exports`
+        const directory = `/home/ec2-user/kanjitest/backend/exports`
 
         if (!fs.existsSync(directory)) {
             // If it doesn't exist, create it
