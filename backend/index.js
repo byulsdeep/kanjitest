@@ -22,9 +22,8 @@ app.listen(PORT, () => {
 
 // logger
 const transport = new DailyRotateFile({
-    // filename: `C://workspace/kanjitest/backend/logs/kanjitest-%DATE%.log`,
-    // filename: `/home/ec2-user/kanjitest/backend/logs/kanjitest-%DATE%.log`,
-    filename: `./logs/kanjitest-%DATE%.log`,
+    filename: `/home/ec2-user/kanjitest/backend/logs/kanjitest-%DATE%.log`,
+    // filename: `./logs/kanjitest-%DATE%.log`,
     datePattern: `YYYY-MM-DD`,
     zippedArchive: true,
     maxSize: `20m`,
@@ -55,7 +54,8 @@ app.use((err, req, res, next) => {
 // download api
 app.get('/download/:fileName', (req, res) => {
     const fileName = req.params.fileName
-    const filePath = `./exports/${fileName}`
+    const filePath = `/home/ec2-user/kanjitest/backend/exports/${fileName}`
+    // const filePath = `./exports/${fileName}`
 
     // Check if the file exists
     if (fs.existsSync(filePath)) {
@@ -73,8 +73,9 @@ app.get('/download/:fileName', (req, res) => {
 
 // login api
 app.post(`/login`, async (req, res) => {
-    
-    fs.readFile(`./data/admin_info.json`, 'utf8', (err, data) => {
+    const filePath = `/home/ec2-user/kanjitest/backend/data/admin_info.json`
+    // const filePath = `./data/admin_info.json`
+    fs.readFile(filePath, 'utf8', (err, data) => {
         let success = false
         if (err) {
             logger.error('Error reading the JSON file:', err)
@@ -129,9 +130,8 @@ app.post(`/kanjitest`, async (req, res) => {
             点数: `${req.body.scoreValue}/100`,
             経過時間: `${req.body.timeElapsed}`,
         }]
-        //const filePath = `C:/workspace/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
-        // const filePath = `/home/ec2-user/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
-        const filePath = `./exports/${req.body.employeeHireDate}.xlsx`
+        const filePath = `/home/ec2-user/kanjitest/backend/exports/${req.body.employeeHireDate}.xlsx`
+        // const filePath = `./exports/${req.body.employeeHireDate}.xlsx`
         const sheetName = `${req.body.employeeName}${req.body.employeeNumber}`
         logger.info(`attempting excel file creation/modification`)
         logger.info(`filePath: ${filePath}`)
